@@ -1,0 +1,21 @@
+import pyvisa as visa
+import time
+
+try:  
+    resourceManager = visa.ResourceManager() 
+    dev = 'TCPIP0::192.168.1.161::5000::SOCKET'
+    session = resourceManager.open_resource(dev)
+    print('\n Open Successful!')
+    session.read_termination = '\n'
+    session.write_termination = '\n'
+
+    while True:
+        result = session.query('READ? 0')
+        print('READ:', result)
+        # Add a delay if needed
+
+except Exception as e:
+    print('[!] Exception:', str(e))
+finally:
+    # Close the session when interrupted
+    session.close()
